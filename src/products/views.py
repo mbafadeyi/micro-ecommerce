@@ -16,3 +16,8 @@ def product_create_view(request):
         form.add_error(None, "You must be logged in to create products")
     context["form"] = form
     return render(request, "products/create.html", context)
+
+
+def product_list_view(request):
+    object_list = Product.objects.all()
+    return render(request, "products/list.html", {"object_list": object_list})
