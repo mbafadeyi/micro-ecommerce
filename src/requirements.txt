@@ -6,14 +6,34 @@
 #
 asgiref==3.7.2
     # via django
+black==23.7.0
+    # via -r src/requirements/requirements.in
+click==8.1.6
+    # via black
 dj-database-url==2.1.0
     # via -r src/requirements/requirements.in
 django==4.1.10
     # via
     #   -r src/requirements/requirements.in
     #   dj-database-url
+flake8==6.1.0
+    # via -r src/requirements/requirements.in
+mccabe==0.7.0
+    # via flake8
+mypy-extensions==1.0.0
+    # via black
+packaging==23.1
+    # via black
+pathspec==0.11.2
+    # via black
+platformdirs==3.10.0
+    # via black
 psycopg2-binary==2.9.7
     # via -r src/requirements/requirements.in
+pycodestyle==2.11.0
+    # via flake8
+pyflakes==3.1.0
+    # via flake8
 python-decouple==3.8
     # via -r src/requirements/requirements.in
 sqlparse==0.4.4
