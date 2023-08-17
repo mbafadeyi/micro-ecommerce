@@ -1,6 +1,9 @@
+import pathlib
+
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 PROTECTED_MEDIA_ROOT = settings.PROTECTED_MEDIA_ROOT
@@ -37,7 +40,7 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return f"/products/{self.handle}"
+        return reverse("products:detail", kwargs={"handle": self.handle})
 
 
 def handle_product_attachment_upload(instance, filename):
@@ -49,7 +52,23 @@ class ProductAttachment(models.Model):
     file = models.FileField(
         upload_to=handle_product_attachment_upload, storage=protected_storage
     )
+    name = models.CharField(max_length=120, null=True, blank=True)
     is_free = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = pathlib.Path(self.file.name).name
+        super().save(*args, **kwargs)
+
+    @property
+    def display_name(self):
+        return self.name or pathlib.Path(self.file.name).name
+
+    def get_download_url(self):
+        return reverse(
+            "products:download",
+            kwargs={"handle": self.product.handle, "pk": self.pk},
+        )
