@@ -1,6 +1,10 @@
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.utils import timezone
+
+PROTECTED_MEDIA_ROOT = settings.PROTECTED_MEDIA_ROOT
+protected_storage = FileSystemStorage(location=str(PROTECTED_MEDIA_ROOT))
 
 
 class Product(models.Model):
@@ -12,7 +16,9 @@ class Product(models.Model):
     name = models.CharField(max_length=120)
     handle = models.SlugField(unique=True)  # slug
     price = models.DecimalField(max_digits=10, decimal_places=2, default=9.99)
-    og_price = models.DecimalField(max_digits=10, decimal_places=2, default=9.99)
+    og_price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=9.99
+    )
     # stripe_price_id =
     stripe_price = models.IntegerField(default=999)  # 100 * price
     price_changed_timestamp = models.DateTimeField(
@@ -32,3 +38,18 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return f"/products/{self.handle}"
+
+
+def handle_product_attachment_upload(instance, filename):
+    return f"products/{instance.product.handle}/attachments/{filename}"
+
+
+class ProductAttachment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    file = models.FileField(
+        upload_to=handle_product_attachment_upload, storage=protected_storage
+    )
+    is_free = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
