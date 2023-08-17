@@ -26,6 +26,8 @@ packaging==23.1
     # via black
 pathspec==0.11.2
     # via black
+pillow==10.0.0
+    # via -r src/requirements/requirements.in
 platformdirs==3.10.0
     # via black
 psycopg2-binary==2.9.7
