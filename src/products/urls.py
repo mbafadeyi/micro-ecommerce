@@ -8,6 +8,11 @@ urlpatterns = [
     path("create/", views.product_create_view, name="create"),
     path("<slug:handle>/", views.product_detail_view, name="detail"),
     path(
+        "<slug:handle>/manage/",
+        views.product_manage_detail_view,
+        name="manager",
+    ),
+    path(
         "<slug:handle>/download/<int:pk>/",
         views.product_attachment_download_view,
         name="download",

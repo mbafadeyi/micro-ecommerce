@@ -1653,14 +1653,14 @@ input:checked + .toggle-bg {
   padding-bottom: 0.75rem;
 }
 
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .pl-3 {
@@ -2112,12 +2112,12 @@ input:checked + .toggle-bg {
     max-width: 28rem;
   }
 
-  .sm\:rounded-none {
-    border-radius: 0px;
-  }
-
   .sm\:rounded-lg {
     border-radius: 0.5rem;
+  }
+
+  .sm\:rounded-none {
+    border-radius: 0px;
   }
 
   .sm\:rounded-l-lg {
