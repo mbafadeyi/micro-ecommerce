@@ -5,3 +5,4 @@ python-decouple
 flake8
 black
 Pillow
+stripe

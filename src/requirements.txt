@@ -8,6 +8,10 @@ asgiref==3.7.2
     # via django
 black==23.7.0
     # via -r src/requirements/requirements.in
+certifi==2023.7.22
+    # via requests
+charset-normalizer==3.2.0
+    # via requests
 click==8.1.6
     # via black
 dj-database-url==2.1.0
@@ -18,6 +22,8 @@ django==4.1.10
     #   dj-database-url
 flake8==6.1.0
     # via -r src/requirements/requirements.in
+idna==3.4
+    # via requests
 mccabe==0.7.0
     # via flake8
 mypy-extensions==1.0.0
@@ -38,7 +44,13 @@ pyflakes==3.1.0
     # via flake8
 python-decouple==3.8
     # via -r src/requirements/requirements.in
+requests==2.31.0
+    # via stripe
 sqlparse==0.4.4
     # via django
+stripe==6.0.0
+    # via -r src/requirements/requirements.in
 typing-extensions==4.7.1
     # via dj-database-url
+urllib3==2.0.4
+    # via requests
