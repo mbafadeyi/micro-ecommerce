@@ -20,6 +20,9 @@ django==4.1.10
     # via
     #   -r src/requirements/requirements.in
     #   dj-database-url
+    #   django-storages
+django-storages==1.13.2
+    # via -r src/requirements/requirements.in
 flake8==6.1.0
     # via -r src/requirements/requirements.in
 idna==3.4

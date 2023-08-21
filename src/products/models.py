@@ -8,12 +8,13 @@ from django.urls import reverse
 from django.utils import timezone
 
 from cfehome.env import config
+from cfehome.storages.backends import ProtectedFileStorage
 
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default=None)
 stripe.api_key = STRIPE_SECRET_KEY
 
 PROTECTED_MEDIA_ROOT = settings.PROTECTED_MEDIA_ROOT
-protected_storage = FileSystemStorage(location=str(PROTECTED_MEDIA_ROOT))
+protected_storage = ProtectedFileStorage()  # FileSystemStorage(location=str(PROTECTED_MEDIA_ROOT))
 
 
 class Product(models.Model):
