@@ -10,7 +10,7 @@ urlpatterns = [
     path(
         "<slug:handle>/manage/",
         views.product_manage_detail_view,
-        name="manager",
+        name="manage",
     ),
     path(
         "<slug:handle>/download/<int:pk>/",

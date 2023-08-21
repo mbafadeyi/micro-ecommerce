@@ -19,7 +19,7 @@ def product_create_view(request):
         if request.user.is_authenticated:
             obj.user = request.user
             obj.save()
-            return redirect("/products/create/")
+            return redirect(obj.get_manage_url())
         form.add_error(None, "You must be logged in to create products")
     context["form"] = form
     return render(request, "products/create.html", context)
@@ -50,10 +50,20 @@ def product_manage_detail_view(request, handle=None):
         instance.save()
         formset.save(commit=False)
         for _form in formset:
-            attachment_obj = form.save(commit=False)
-            attachment_obj.product = instance
-            attachment_obj.save()
-        # return redirect("/products/create/")
+            is_delete = _form.cleaned_data.get("DELETE")
+            try:
+                attachment_obj = _form.save(commit=False)
+            except:
+                attachment_obj = None
+            if is_delete:
+                if attachment_obj is not None:
+                    if attachment_obj.pk:
+                        attachment_obj.delete()
+            else:
+                if attachment_obj is not None:
+                    attachment_obj.product = instance
+                    attachment_obj.save()
+        return redirect(obj.get_manage_url())
     context["form"] = form
     context["formset"] = formset
     return render(request, "products/manager.html", context)
@@ -64,7 +74,11 @@ def product_detail_view(request, handle=None):
     attachments = ProductAttachment.objects.filter(product=obj)
     is_owner = False
     if request.user.is_authenticated:
-        is_owner = True  # verify ownership
+        is_owner = (
+            request.user.purchase_set.all()
+            .filter(product=obj, completed=True)
+            .exists()
+        )
     context = {"object": obj, "is_owner": is_owner, "attachments": attachments}
     return render(request, "products/detail.html", context)
 
