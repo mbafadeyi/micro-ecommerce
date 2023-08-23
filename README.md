@@ -1,5 +1,5 @@
 # micro-ecommerce
-A Micro eCommerce Web App with Python and Serverless Postgres
+A Micro eCommerce Web App built with Python, Serverless Postgres, Stripe Checkout and Docker.
 
 
 ## Prerequisites
