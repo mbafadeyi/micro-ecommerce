@@ -1,7 +1,7 @@
 .DS_Store
 local-cdn
-.vscode/
-.env-prod
+# .vscode/
+# .env-prod
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
