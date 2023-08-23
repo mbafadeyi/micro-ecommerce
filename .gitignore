@@ -1,7 +1,6 @@
 .DS_Store
 local-cdn
-.vscode/
-.env-prod
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -108,6 +107,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env-prod
 .venv
 env/
 venv/
