@@ -3,7 +3,9 @@ from cfehome.env import config
 AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default=None)
 AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default=None)
 AWS_S3_SIGNATURE_VERSION = "s3v4"
-AWS_STORAGE_BUCKET_NAME = "micro-ecommerce"
+AWS_STORAGE_BUCKET_NAME = config(
+    "AWS_STORAGE_BUCKET_NAME", default="micro-ecommerce"
+)
 AWS_S3_ENDPOINT_URL = (
     f"https://{AWS_STORAGE_BUCKET_NAME}.eu-central-1.linodeobjects.com"
 )

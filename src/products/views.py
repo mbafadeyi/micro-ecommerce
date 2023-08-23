@@ -1,7 +1,9 @@
 import mimetypes
 
-from django.http import FileResponse, HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+
+from cfehome.storages.utils import generate_presigned_url
 
 from .forms import (
     ProductAttachmentInlineFormSet,
@@ -20,7 +22,7 @@ def product_create_view(request):
             obj.user = request.user
             obj.save()
             return redirect(obj.get_manage_url())
-        form.add_error(None, "You must be logged in to create products")
+        form.add_error(None, "You must be logged in to create products.")
     context["form"] = form
     return render(request, "products/create.html", context)
 
@@ -88,14 +90,20 @@ def product_attachment_download_view(request, handle=None, pk=None):
         ProductAttachment, product__handle=handle, pk=pk
     )
     can_download = attachment.is_free or False
-    if request.user.is_authenticated:
-        can_download = True  # check ownership
+    if request.user.is_authenticated and can_download is False:
+        can_download = (
+            request.user.purchase_set.all()
+            .filter(product=attachment.product, completed=True)
+            .exists()
+        )
     if can_download is False:
         return HttpResponseBadRequest()
-    file = attachment.file.open(mode="rb")
-    filename = attachment.file.name
-    content_type, _ = mimetypes.guess_type(filename)
-    response = FileResponse(file)
-    response["Content-Type"] = content_type or "application/octet-stream"
-    response["Content-Disposition"] = f"attachment;filename={filename}"
-    return response
+    file_name = attachment.file.name
+    # open(mode="rb") # cdn -> S3 object storage
+    file_url = generate_presigned_url(file_name)
+    # filename = attachment.file.name
+    # content_type, _ = mimetypes.guess_type(filename)
+    # response = FileResponse(file)
+    # response["Content-Type"] = content_type or "application/octet-stream"
+    # response["Content-Disposition"] = f"attachment;filename={filename}"
+    return HttpResponseRedirect(file_url)
